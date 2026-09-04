@@ -76,7 +76,7 @@ h1,h2,h3{
   content:'';
   position:absolute; inset:0;
   background:
-    linear-gradient(180deg, rgba(20,16,11,0.35) 0%, rgba(20,16,11,0.25) 30%, rgba(20,16,11,0.85) 78%, #1C1712 100%);
+    linear-gradient(180deg, rgba(15,12,8,0.55) 0%, rgba(15,12,8,0.5) 30%, rgba(15,12,8,0.92) 72%, #1C1712 100%);
 }
 .hero-content{
   position:relative;
@@ -85,19 +85,21 @@ h1,h2,h3{
   padding:0 28px 72px;
 }
 .hero-inner{ max-width:1160px; margin:0 auto; }
-.hero .eyebrow{ color:var(--gold-bright,#E0BE7A); display:block; margin-bottom:18px; }
+.hero .eyebrow{ color:var(--gold-bright,#E0BE7A); display:block; margin-bottom:18px; text-shadow:0 2px 12px rgba(0,0,0,0.7); }
 .hero h1{
   font-size:clamp(36px, 5.4vw, 68px);
   line-height:1.06;
   max-width:16ch;
   margin-bottom:22px;
   color:#fff;
+  text-shadow:0 2px 20px rgba(0,0,0,0.55);
 }
 .hero-sub{
   font-size:17px;
-  color:var(--ink-dim);
+  color:var(--ink);
   max-width:52ch;
   margin-bottom:34px;
+  text-shadow:0 1px 12px rgba(0,0,0,0.6);
 }
 .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
 
@@ -245,6 +247,27 @@ section{ padding:100px 0; }
   border-radius:4px;
   box-shadow:var(--shadow-soft);
 }
+.gallery-grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.gallery-grid-2 img{
+  width:100%; height:560px;
+  object-fit:cover;
+  border-radius:4px;
+  box-shadow:var(--shadow-soft);
+}
+.outdoor-note{
+  font-size:12px;
+  color:var(--ink-faint);
+  padding-top:18px;
+  margin-top:18px;
+  border-top:1px solid var(--line);
+  line-height:1.7;
+}
+.outdoor-note a{ color:var(--ink-faint); text-decoration:underline; }
+.outdoor-note a:hover{ color:var(--ink-dim); }
 .g1{ grid-row:1 / 3; }
 .g1 img{ height:100%; min-height:520px; }
 .g2 img, .g3 img{ height:250px; }
@@ -332,23 +355,25 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   .gallery-grid{ grid-template-columns:1fr 1fr; }
   .g1{ grid-column:1/3; grid-row:auto; }
   .g1 img{ min-height:320px; }
+  .gallery-grid-2{ grid-template-columns:1fr; }
+  .gallery-grid-2 img{ height:420px; }
   .process-item{ grid-template-columns:50px 1fr; }
   section{ padding:64px 0; }
 }
 </style>
 
 <div class="hero">
-  <div class="hero-bg"><img src="images/hero-pergola.jpg" alt="Терраса с уличными шторами на закате"></div>
+  <div class="hero-bg"><img src="images/interior-curtain-wide.jpg" alt="Дизайнерские шторы и кресло с подушкой в интерьере"></div>
   <div class="hero-content">
     <div class="hero-inner">
-      <span class="eyebrow">Пошив и монтаж на заказ · Москва и область</span>
-      <h1>Текстиль для дома — от гостиной до беседки</h1>
-      <p class="hero-sub">Уличные шторы и тенты, которые выдерживают дождь и не снимаются на зиму. Дизайнерские шторы, покрывала и абажуры для интерьера — по вашим меркам и тканям. Один звонок — обе истории.</p>
+      <span class="eyebrow">Пошив на заказ · Москва и область</span>
+      <h1>Текстиль, который становится частью дома</h1>
+      <p class="hero-sub">Шторы, покрывала и абажуры на заказ — по вашим меркам, из дизайнерских тканей британских домов Harlequin, Clarke &amp; Clarke, Beaumont. Подбор ткани под готовый интерьер или с нуля.</p>
       <div class="hero-ctas">
-        <a class="btn btn-gold" href="tel:+79108481207">Записаться на бесплатный замер</a>
-        <a class="btn btn-ghost" href="#gallery">Смотреть работы</a>
+        <a class="btn btn-gold" href="tel:+79854189873">Обсудить проект</a>
+        <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Написать в Телеграм</a>
       </div>
-      <p class="btn-note" style="margin-top:16px;">Вадим — уличный текстиль · +7 910 848-12-07 · отвечает за несколько часов</p>
+      <p class="btn-note" style="margin-top:16px;">Светлана — дизайнер-декоратор по тканям · отвечает за несколько часов</p>
     </div>
   </div>
   <div class="scroll-cue"><span class="line"></span>Листайте вниз</div>
@@ -359,20 +384,9 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     <div class="section-head">
       <span class="eyebrow">Кто шьёт</span>
       <h2>Два мастера, одна мастерская</h2>
-      <p>«Уличная гармония» — семейная история: Вадим отвечает за улицу, Светлана — за дом. Работаем вместе больше 10 лет, каждый — в своей стихии.</p>
+      <p>«Уличная гармония» — семейная история: Светлана отвечает за дом, Вадим — за улицу. Работаем вместе больше 10 лет, каждый — в своей стихии.</p>
     </div>
     <div class="masters-grid">
-      <div class="master-card">
-        <div class="role">Улица</div>
-        <h3>Вадим — уличный текстиль</h3>
-        <p>Пошив и монтаж штор, тентов-крыш и чехлов для беседок, террас, качелей и кафе. Выезд на замер, установка в тот же выезд, 10+ лет в сфере, работа по договору. 5.0 и 11 отзывов на Авито.</p>
-        <div class="master-tags">
-          <span class="tag">Беседки и террасы</span>
-          <span class="tag">Тенты-крыши</span>
-          <span class="tag">Чехлы</span>
-        </div>
-        <a class="master-link" href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">Профиль на Авито — 5.0, 11 отзывов ↗</a>
-      </div>
       <div class="master-card">
         <div class="role">Дом</div>
         <h3>Светлана — интерьерный текстиль</h3>
@@ -384,6 +398,16 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
         </div>
         <a class="master-link" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм-канал с проектами ↗</a>
       </div>
+      <div class="master-card">
+        <div class="role">Улица</div>
+        <h3>Вадим — уличный текстиль</h3>
+        <p>Пошив и монтаж штор, тентов-крыш и чехлов для беседок, террас и качелей. 10+ лет в сфере, работа по договору. Сезон открывается по весне — сейчас можно обсудить проект заранее.</p>
+        <div class="master-tags">
+          <span class="tag">Беседки и террасы</span>
+          <span class="tag">Тенты-крыши</span>
+        </div>
+        <a class="master-link" href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">Профиль на Авито — 5.0, 11 отзывов ↗</a>
+      </div>
     </div>
   </div>
 </section>
@@ -392,38 +416,23 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Что шьём</span>
-      <h2>Полный цикл — от эскиза до монтажа</h2>
+      <h2>Текстиль для интерьера — под ключ</h2>
     </div>
   </div>
   <div class="wrap" style="padding:0;">
     <div class="services-grid">
       <div class="service">
         <span class="num">01</span>
-        <h3>Уличные шторы</h3>
-        <p>Для беседок, террас и веранд. Всесезонные ткани — можно не снимать на зиму.</p>
-      </div>
-      <div class="service">
-        <span class="num">02</span>
-        <h3>Тенты-крыши</h3>
-        <p>Для беседок, качелей и летних кафе. Каркас, раскрой и монтаж под ключ.</p>
-      </div>
-      <div class="service">
-        <span class="num">03</span>
-        <h3>Чехлы на мебель</h3>
-        <p>Для уличной мебели и качелей — защита от дождя и солнца по размеру.</p>
-      </div>
-      <div class="service">
-        <span class="num">04</span>
         <h3>Интерьерные шторы</h3>
         <p>Классические и римские, из дизайнерских тканей — под готовый интерьер.</p>
       </div>
       <div class="service">
-        <span class="num">05</span>
+        <span class="num">02</span>
         <h3>Покрывала и подушки</h3>
         <p>В тон шторам или отдельным акцентом — по вашим тканям или из каталога.</p>
       </div>
       <div class="service">
-        <span class="num">06</span>
+        <span class="num">03</span>
         <h3>Абажуры на заказ</h3>
         <p>Нестандартные размеры и форма, без видимых каркасных рёбер и швов.</p>
       </div>
@@ -440,15 +449,15 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     <div class="why-grid">
       <div class="fact">
         <div class="figure">10+</div>
-        <div class="label">лет в пошиве и монтаже уличного текстиля</div>
+        <div class="label">лет в пошиве текстиля на заказ</div>
       </div>
       <div class="fact">
-        <div class="figure">3 дня</div>
-        <div class="label">от замера до монтажа — по отзывам клиентов</div>
+        <div class="figure">3</div>
+        <div class="label">британских бренда тканей в работе — Harlequin, Clarke &amp; Clarke, Beaumont</div>
       </div>
       <div class="fact">
-        <div class="figure">5.0</div>
-        <div class="label">рейтинг и 11 отзывов на Авито</div>
+        <div class="figure">0</div>
+        <div class="label">типовых решений — только индивидуальный пошив по вашим меркам</div>
       </div>
       <div class="fact">
         <div class="figure">100%</div>
@@ -462,49 +471,12 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Наши работы</span>
-      <h2>Реальные объекты, не рендеры</h2>
-      <p>Фото с последних заказов — беседки и террасы в Москве и области.</p>
+      <h2>Реальные проекты, не рендеры</h2>
+      <p>Из последних заказов — дизайнерский текстиль для дома.</p>
     </div>
-    <div class="gallery-grid">
-      <div class="g1"><img src="images/vadim-wood-gazebo.jpg" alt="Терраса с уличными шторами на закате"></div>
-      <div class="g2"><img src="images/terrace-white.jpg" alt="Терраса с белыми уличными шторами"></div>
-      <div class="g3"><img src="images/vadim-round-gazebo.jpg" alt="Вадим у беседки с тёмно-синими шторами"></div>
-      <div class="g2" style="grid-column:2/4;"><img src="images/hero-pergola.jpg" alt="Вадим у деревянной беседки с серыми шторами" style="height:250px; width:100%;"></div>
-    </div>
-  </div>
-</section>
-
-<section class="testimonials">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Отзывы</span>
-      <h2>Что говорят клиенты</h2>
-    </div>
-    <div class="t-grid">
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="quote">«Очень довольна шторами для крытой террасы: специалисты опытные, корректные, настоящие профессионалы своего дела. Результат работы отлично видно на фото и выше всяких похвал.»</p>
-        <div class="who">Мария Дайн</div>
-        <div class="what">Пошив тентов-крыш для беседок под ключ</div>
-      </div>
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="quote">«Сделали в срок. Работа качественная. Швы на шторах ровные. Ткани добротные. Выбрал Оксфорд.»</p>
-        <div class="who">Александр</div>
-        <div class="what">Пошив уличных штор для террас и беседок</div>
-      </div>
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="quote">«Очень довольна качеством и внешним видом тента. Искала именно всесезонный, чтоб не снимать на зиму. Всё выполнено в срок, монтаж — быстро и качественно.»</p>
-        <div class="who">Людмила Исакина</div>
-        <div class="what">Пошив тентов-крыш для кафе, качелей и беседок</div>
-      </div>
-      <div class="t-card">
-        <div class="t-stars">★★★★★</div>
-        <p class="quote">«Сделали всё очень быстро! От замера до монтажа — 3 дня. Ребята приехали вовремя, монтаж выполнили аккуратно, за собой убрали мусор. Качество отличное.»</p>
-        <div class="who">Роман</div>
-        <div class="what">Пошив и монтаж уличных штор, крыш, тентов</div>
-      </div>
+    <div class="gallery-grid-2">
+      <img src="images/interior-chair-closeup.jpg" alt="Шторы из дизайнерской ткани у окна">
+      <img src="images/interior-curtain-wide.jpg" alt="Кресло с декоративной подушкой из той же ткани">
     </div>
   </div>
 </section>
@@ -513,20 +485,20 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Как проходит заказ</span>
-      <h2>Пять шагов до готовой беседки</h2>
+      <h2>От идеи до готового текстиля</h2>
     </div>
     <div class="process-list">
       <div class="process-item">
         <span class="step-num">01</span>
-        <div><h3>Заявка</h3><p>Звонок или сообщение — расскажите, что нужно и покажите фото беседки, террасы или окна.</p></div>
+        <div><h3>Заявка</h3><p>Звонок или сообщение — расскажите, что нужно, покажите фото окна или комнаты.</p></div>
       </div>
       <div class="process-item">
         <span class="step-num">02</span>
-        <div><h3>Замер <span class="badge">Бесплатно</span></h3><p>Выезжаем на объект по Москве и области, снимаем точные размеры, обсуждаем ткань и цвет.</p></div>
+        <div><h3>Замер <span class="badge">Бесплатно</span></h3><p>Выезжаем на объект по Москве и области, снимаем точные размеры, обсуждаем стиль.</p></div>
       </div>
       <div class="process-item">
         <span class="step-num">03</span>
-        <div><h3>Расчёт и договор</h3><p>Честная стоимость по факту размеров и выбранной ткани — без сюрпризов в конце. Работаем по договору.</p></div>
+        <div><h3>Подбор ткани</h3><p>Помогаем выбрать ткань — под уже готовый интерьер или с нуля, из каталогов дизайнерских брендов.</p></div>
       </div>
       <div class="process-item">
         <span class="step-num">04</span>
@@ -534,7 +506,7 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
       </div>
       <div class="process-item">
         <span class="step-num">05</span>
-        <div><h3>Монтаж <span class="badge">от 3 дней</span></h3><p>Устанавливаем на месте и убираем за собой. Изделие с гарантией.</p></div>
+        <div><h3>Монтаж и приёмка</h3><p>Устанавливаем на месте и убираем за собой. Изделие с гарантией.</p></div>
       </div>
     </div>
   </div>
@@ -563,10 +535,10 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 <section class="final-cta">
   <div class="wrap">
     <span class="eyebrow">Готовы обсудить проект?</span>
-    <h2>Расскажите, что за объект — посчитаем и приедем на замер</h2>
+    <h2>Расскажите про интерьер — подберём ткань и посчитаем</h2>
     <p>Замер бесплатный. Отвечаем за несколько часов, на связи каждый день с 08:00 до 23:00.</p>
     <div class="hero-ctas" style="justify-content:center; margin-top:8px;">
-      <a class="btn btn-gold" href="tel:+79108481207">Позвонить: +7 910 848-12-07</a>
+      <a class="btn btn-gold" href="tel:+79854189873">Позвонить: +7 985 418-98-73</a>
       <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Написать в Телеграм</a>
     </div>
   </div>
@@ -576,11 +548,13 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   <div class="wrap footer-row">
     <div class="footer-brand">Уличная гармония</div>
     <div class="contact">
-      Москва и область · <a href="tel:+79108481207">+7 910 848-12-07</a> · работаем 08:00–23:00 ежедневно
+      Москва и область · <a href="tel:+79854189873">+7 985 418-98-73</a> · работаем 08:00–23:00 ежедневно
       <br>
-      <a href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a> ·
-      <a href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">Авито-профиль</a>
+      <a href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a>
     </div>
+  </div>
+  <div class="wrap">
+    <p class="outdoor-note">Также шьём и монтируем уличные шторы, тенты-крыши и чехлы для беседок и террас (Вадим, сезон открывается по весне) — <a href="tel:+79108481207">+7 910 848-12-07</a>, примеры работ и 11 отзывов — <a href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">на Авито ↗</a></p>
   </div>
 </footer>
 
