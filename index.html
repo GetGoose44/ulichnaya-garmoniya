@@ -30,11 +30,23 @@
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
 body{
+  position:relative;
   background:var(--ground);
   color:var(--ink);
   font-family:'Manrope', sans-serif;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+}
+/* Subtle film-grain texture over the whole page — the one flourish that touches everything */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:999;
+  pointer-events:none;
+  opacity:0.05;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 img{max-width:100%; display:block;}
 .wrap{ max-width:1160px; margin:0 auto; padding:0 28px; }
@@ -55,6 +67,27 @@ h1,h2,h3{
   color:var(--gold);
 }
 
+/* ============ SCROLL REVEAL ============ */
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity 0.8s cubic-bezier(.16,.8,.3,1), transform 0.8s cubic-bezier(.16,.8,.3,1);
+}
+.reveal.is-visible{ opacity:1; transform:translateY(0); }
+.reveal-stagger.is-visible > *{ opacity:1; transform:translateY(0); }
+.reveal-stagger > *{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity 0.7s cubic-bezier(.16,.8,.3,1), transform 0.7s cubic-bezier(.16,.8,.3,1);
+}
+.reveal-stagger.is-visible > *:nth-child(1){ transition-delay:0.05s; }
+.reveal-stagger.is-visible > *:nth-child(2){ transition-delay:0.15s; }
+.reveal-stagger.is-visible > *:nth-child(3){ transition-delay:0.25s; }
+.reveal-stagger.is-visible > *:nth-child(4){ transition-delay:0.35s; }
+@media (prefers-reduced-motion: reduce){
+  .reveal, .reveal-stagger > *{ opacity:1 !important; transform:none !important; transition:none !important; }
+}
+
 /* ============ HERO ============ */
 .hero{
   position:relative;
@@ -65,12 +98,15 @@ h1,h2,h3{
 }
 .hero-bg{
   position:absolute; inset:0;
+  overflow:hidden;
 }
 .hero-bg img{
-  position:absolute; inset:0;
-  width:100%; height:100%;
+  position:absolute;
+  left:0; top:-8%;
+  width:100%; height:118%;
   object-fit:cover;
   object-position:center 62%;
+  will-change:transform;
 }
 .hero-bg::after{
   content:'';
@@ -85,7 +121,14 @@ h1,h2,h3{
   padding:0 28px 72px;
 }
 .hero-inner{ max-width:1160px; margin:0 auto; }
-.hero .eyebrow{ color:var(--gold-bright,#E0BE7A); display:block; margin-bottom:18px; text-shadow:0 2px 12px rgba(0,0,0,0.7); }
+.hero .eyebrow{
+  color:var(--gold-bright,#E0BE7A);
+  display:block;
+  margin-bottom:18px;
+  text-shadow:0 2px 12px rgba(0,0,0,0.7);
+  opacity:0;
+  animation:fadeUp 0.8s cubic-bezier(.16,.8,.3,1) 0.1s forwards;
+}
 .hero h1{
   font-size:clamp(36px, 5.4vw, 68px);
   line-height:1.06;
@@ -93,6 +136,8 @@ h1,h2,h3{
   margin-bottom:22px;
   color:#fff;
   text-shadow:0 2px 20px rgba(0,0,0,0.55);
+  opacity:0;
+  animation:fadeUp 0.9s cubic-bezier(.16,.8,.3,1) 0.22s forwards;
 }
 .hero-sub{
   font-size:17px;
@@ -100,10 +145,24 @@ h1,h2,h3{
   max-width:52ch;
   margin-bottom:34px;
   text-shadow:0 1px 12px rgba(0,0,0,0.6);
+  opacity:0;
+  animation:fadeUp 0.9s cubic-bezier(.16,.8,.3,1) 0.34s forwards;
 }
-.hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+.hero-ctas{
+  display:flex; gap:14px; flex-wrap:wrap; align-items:center;
+  opacity:0;
+  animation:fadeUp 0.9s cubic-bezier(.16,.8,.3,1) 0.46s forwards;
+}
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(16px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero .eyebrow, .hero h1, .hero-sub, .hero-ctas{ animation:none; opacity:1; }
+}
 
 .btn{
+  position:relative;
   display:inline-flex;
   align-items:center;
   gap:10px;
@@ -115,7 +174,8 @@ h1,h2,h3{
   text-decoration:none;
   cursor:pointer;
   border:1px solid transparent;
-  transition:transform 0.15s ease, background 0.15s ease;
+  overflow:hidden;
+  transition:transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 .btn:hover{ transform:translateY(-1px); }
 .btn-gold{
@@ -142,15 +202,35 @@ h1,h2,h3{
   color:var(--ink-faint);
   display:flex; flex-direction:column; align-items:center; gap:8px;
 }
-.scroll-cue .line{ width:1px; height:34px; background:linear-gradient(var(--gold), transparent); }
+.scroll-cue .line{
+  width:1px; height:34px;
+  background:linear-gradient(var(--gold), transparent);
+  animation:scrollLine 2.2s ease-in-out infinite;
+}
+@keyframes scrollLine{
+  0%{ transform:scaleY(0); transform-origin:top; opacity:1; }
+  50%{ transform:scaleY(1); transform-origin:top; opacity:1; }
+  51%{ transform-origin:bottom; }
+  100%{ transform:scaleY(0); transform-origin:bottom; opacity:0.4; }
+}
+@media (prefers-reduced-motion: reduce){ .scroll-cue .line{ animation:none; } }
 
 /* ============ SECTION SHELL ============ */
 section{ padding:100px 0; }
-.section-head{ max-width:640px; margin-bottom:56px; }
+.section-head{ max-width:640px; margin-bottom:56px; position:relative; }
 .section-head h2{ font-size:clamp(28px,3.6vw,42px); margin-top:14px; }
 .section-head p{ color:var(--ink-dim); margin-top:16px; font-size:16px; max-width:56ch; }
+.section-head .rule{
+  display:block;
+  width:0;
+  height:1px;
+  background:var(--gold-soft);
+  margin-bottom:14px;
+  transition:width 1s cubic-bezier(.16,.8,.3,1) 0.15s;
+}
+.reveal.is-visible .rule{ width:64px; }
 
-/* ============ MASTERS (two-column intro) ============ */
+/* ============ MASTERS ============ */
 .masters{ background:var(--surface); }
 .masters-grid{
   display:grid;
@@ -161,15 +241,12 @@ section{ padding:100px 0; }
   border-radius:4px;
   overflow:hidden;
 }
-.masters-grid-solo{
-  grid-template-columns:1fr;
-  max-width:620px;
-  margin:0 auto;
-}
 .master-card{
   background:var(--surface);
   padding:44px 40px;
+  transition:background 0.3s ease;
 }
+.master-card:hover{ background:var(--surface-raised); }
 .master-card .role{
   font-family:'Manrope', sans-serif;
   font-size:12px;
@@ -186,7 +263,9 @@ section{ padding:100px 0; }
   object-fit:cover;
   border:2px solid var(--gold-soft);
   flex-shrink:0;
+  transition:border-color 0.3s ease, transform 0.3s ease;
 }
+.master-card:hover .master-avatar{ border-color:var(--gold); transform:scale(1.05); }
 .master-head-text{ min-width:0; }
 .master-card h3{ font-size:22px; margin-bottom:0; color:var(--ink); }
 .master-card p{ color:var(--ink-dim); font-size:15px; margin-bottom:18px; }
@@ -208,7 +287,9 @@ section{ padding:100px 0; }
   border-radius:20px;
   color:var(--ink-dim);
   font-weight:600;
+  transition:border-color 0.2s ease, color 0.2s ease;
 }
+.master-card:hover .tag{ border-color:var(--gold-soft); color:var(--ink); }
 
 /* ============ SERVICES ============ */
 .services-grid{
@@ -221,14 +302,31 @@ section{ padding:100px 0; }
 .service{
   background:var(--ground);
   padding:36px 32px;
+  position:relative;
+  overflow:hidden;
+  transition:background 0.35s ease;
 }
+.service::before{
+  content:'';
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:2px;
+  background:var(--gold);
+  transform:scaleY(0);
+  transform-origin:top;
+  transition:transform 0.4s cubic-bezier(.16,.8,.3,1);
+}
+.service:hover::before{ transform:scaleY(1); }
+.service:hover{ background:var(--surface-raised); }
 .service .num{
   font-family:'Bodoni Moda', serif;
   font-size:14px;
   color:var(--gold);
   margin-bottom:20px;
   display:block;
+  transition:transform 0.35s cubic-bezier(.16,.8,.3,1);
 }
+.service:hover .num{ transform:translateX(4px); }
 .service h3{ font-size:19px; font-weight:500; margin-bottom:10px; color:var(--ink); }
 .service p{ font-size:14px; color:var(--ink-dim); }
 
@@ -236,75 +334,51 @@ section{ padding:100px 0; }
 .why{ background:var(--surface); }
 .why-grid{
   display:grid;
-  grid-template-columns:repeat(4, 1fr);
+  grid-template-columns:repeat(3, 1fr);
   gap:36px;
 }
-.why-grid-3{ grid-template-columns:repeat(3, 1fr); }
 .fact .figure{
   font-family:'Bodoni Moda', serif;
-  font-size:44px;
+  font-size:34px;
   color:var(--gold);
   line-height:1;
   margin-bottom:12px;
 }
-.why-grid-3 .fact .figure{ font-size:34px; }
 .fact .label{ font-size:14px; color:var(--ink-dim); line-height:1.5; }
 
 /* ============ GALLERY ============ */
-.gallery-grid{
-  display:grid;
-  grid-template-columns:1.3fr 1fr 1fr;
-  grid-template-rows:auto auto;
-  gap:14px;
-}
-.gallery-grid img{
-  width:100%; height:100%;
-  object-fit:cover;
-  border-radius:4px;
-  box-shadow:var(--shadow-soft);
-}
 .gallery-grid-2{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:14px;
 }
-.gallery-grid-2 img{
-  width:100%; height:560px;
-  object-fit:cover;
+.gallery-item{
+  position:relative;
   border-radius:4px;
+  overflow:hidden;
   box-shadow:var(--shadow-soft);
 }
-.outdoor-note{
-  font-size:12px;
-  color:var(--ink-faint);
-  padding-top:18px;
-  margin-top:18px;
-  border-top:1px solid var(--line);
-  line-height:1.7;
+.gallery-item img{
+  width:100%; height:560px;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.7s cubic-bezier(.16,.8,.3,1);
 }
-.outdoor-note a{ color:var(--ink-faint); text-decoration:underline; }
-.outdoor-note a:hover{ color:var(--ink-dim); }
-.g1{ grid-row:1 / 3; }
-.g1 img{ height:100%; min-height:520px; }
-.g2 img, .g3 img{ height:250px; }
-
-/* ============ TESTIMONIALS ============ */
-.testimonials{ background:var(--surface); }
-.t-grid{
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:1px;
-  background:var(--line);
-  border:1px solid var(--line);
+.gallery-item:hover img{ transform:scale(1.07); }
+.gallery-caption{
+  position:absolute; left:0; right:0; bottom:0;
+  padding:22px 20px;
+  background:linear-gradient(0deg, rgba(15,12,8,0.88) 10%, transparent 100%);
+  color:var(--ink);
+  font-family:'Bodoni Moda', serif;
+  font-size:15px;
+  transform:translateY(115%);
+  transition:transform 0.45s cubic-bezier(.16,.8,.3,1);
 }
-.t-card{
-  background:var(--surface);
-  padding:36px 40px;
+.gallery-item:hover .gallery-caption{ transform:translateY(0); }
+@media (hover:none){
+  .gallery-caption{ transform:translateY(0); background:linear-gradient(0deg, rgba(15,12,8,0.75) 20%, transparent 100%); }
 }
-.t-stars{ color:var(--gold); font-size:14px; letter-spacing:2px; margin-bottom:16px; }
-.t-card p.quote{ font-size:16px; color:var(--ink); margin-bottom:20px; font-family:'Bodoni Moda', serif; font-weight:400; line-height:1.5; }
-.t-card .who{ font-size:13px; color:var(--ink-dim); font-weight:700; }
-.t-card .what{ font-size:12px; color:var(--ink-faint); margin-top:2px; }
 
 /* ============ PROCESS ============ */
 .process-list{ display:flex; flex-direction:column; }
@@ -315,7 +389,9 @@ section{ padding:100px 0; }
   padding:28px 0;
   border-top:1px solid var(--line);
   align-items:baseline;
+  transition:padding-left 0.3s ease;
 }
+.process-item:hover{ padding-left:8px; }
 .process-item:last-child{ border-bottom:1px solid var(--line); }
 .process-item .step-num{
   font-family:'Bodoni Moda', serif;
@@ -333,6 +409,50 @@ section{ padding:100px 0; }
   margin-left:12px;
 }
 
+/* ============ FAQ ============ */
+.faq-list{ max-width:720px; }
+.faq-item{
+  border-top:1px solid var(--line);
+  padding:22px 0;
+}
+.faq-item:last-child{ border-bottom:1px solid var(--line); }
+.faq-item summary{
+  cursor:pointer;
+  font-family:'Bodoni Moda', serif;
+  font-size:18px;
+  color:var(--ink);
+  list-style:none;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item .plus{
+  flex-shrink:0;
+  width:26px; height:26px;
+  border:1px solid var(--line-strong);
+  border-radius:50%;
+  position:relative;
+  transition:transform 0.35s cubic-bezier(.16,.8,.3,1), border-color 0.3s ease;
+}
+.faq-item .plus::before, .faq-item .plus::after{
+  content:'';
+  position:absolute;
+  background:var(--gold);
+  transition:opacity 0.2s ease;
+}
+.faq-item .plus::before{ left:7px; right:7px; top:12px; height:1.5px; }
+.faq-item .plus::after{ top:7px; bottom:7px; left:12px; width:1.5px; }
+.faq-item[open] .plus{ transform:rotate(135deg); border-color:var(--gold-soft); }
+.faq-item p{
+  margin-top:14px;
+  color:var(--ink-dim);
+  font-size:15px;
+  line-height:1.6;
+  max-width:58ch;
+}
+
 /* ============ AREA ============ */
 .area{ background:var(--surface); }
 .area-body{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; align-items:flex-start; }
@@ -344,7 +464,9 @@ section{ padding:100px 0; }
   border:1px solid var(--line);
   border-radius:20px;
   color:var(--ink-dim);
+  transition:border-color 0.2s ease, color 0.2s ease;
 }
+.city-chip:hover{ border-color:var(--gold-soft); color:var(--ink); }
 .city-chip.main{ color:var(--gold-bright,#E0BE7A); border-color:var(--gold-soft); }
 
 /* ============ FINAL CTA ============ */
@@ -359,6 +481,19 @@ section{ padding:100px 0; }
 .final-cta p{ color:var(--ink-dim); max-width:48ch; margin:0 auto 36px; font-size:16px; }
 .final-cta .btn-gold{ font-size:17px; padding:19px 36px; }
 
+/* ============ STICKY MOBILE CTA ============ */
+.sticky-cta{
+  position:fixed; left:0; right:0; bottom:0;
+  z-index:150;
+  display:none;
+  gap:10px;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:var(--surface-raised);
+  border-top:1px solid var(--line-strong);
+  box-shadow:0 -10px 30px rgba(0,0,0,0.45);
+}
+.sticky-cta .btn{ flex:1; justify-content:center; padding:14px 12px; font-size:14px; }
+
 /* ============ FOOTER ============ */
 footer{ padding:44px 0; border-top:1px solid var(--line); }
 .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
@@ -367,19 +502,20 @@ footer .contact{ font-size:13px; color:var(--ink-dim); }
 footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line-strong); }
 
 @media (max-width: 860px){
-  .masters-grid, .services-grid, .why-grid, .t-grid{ grid-template-columns:1fr; }
-  .gallery-grid{ grid-template-columns:1fr 1fr; }
-  .g1{ grid-column:1/3; grid-row:auto; }
-  .g1 img{ min-height:320px; }
+  .masters-grid, .services-grid, .why-grid{ grid-template-columns:1fr; }
   .gallery-grid-2{ grid-template-columns:1fr; }
   .gallery-grid-2 img{ height:420px; }
   .process-item{ grid-template-columns:50px 1fr; }
   section{ padding:64px 0; }
 }
+@media (max-width:640px){
+  .sticky-cta{ display:flex; }
+  body{ padding-bottom:78px; }
+}
 </style>
 
 <div class="hero">
-  <div class="hero-bg"><img src="images/hero-terracotta.jpg" alt="Дизайнерские шторы и кресло с подушкой в интерьере"></div>
+  <div class="hero-bg"><img id="heroImg" src="images/hero-terracotta.jpg" alt="Дизайнерские шторы и кресло с подушкой в интерьере"></div>
   <div class="hero-content">
     <div class="hero-inner">
       <span class="eyebrow">Пошив на заказ · Москва и область</span>
@@ -397,12 +533,13 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 
 <section class="masters">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <span class="rule"></span>
       <span class="eyebrow">Кто шьёт</span>
       <h2>Два человека, одна студия</h2>
       <p>«Уличная гармония» — студия интерьерного текстиля на заказ. За каждым проектом стоит внимание к деталям и подбор ткани под конкретный интерьер, а не каталог типовых решений.</p>
     </div>
-    <div class="masters-grid">
+    <div class="masters-grid reveal">
       <div class="master-card">
         <div class="master-head">
           <img class="master-avatar" src="images/svetlana-avatar.jpg" alt="Светлана">
@@ -439,13 +576,14 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 
 <section class="services">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <span class="rule"></span>
       <span class="eyebrow">Что шьём</span>
       <h2>Текстиль для интерьера — под ключ</h2>
     </div>
   </div>
   <div class="wrap" style="padding:0;">
-    <div class="services-grid">
+    <div class="services-grid reveal-stagger reveal">
       <div class="service">
         <span class="num">01</span>
         <h3>Интерьерные шторы</h3>
@@ -467,11 +605,12 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 
 <section class="why">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <span class="rule"></span>
       <span class="eyebrow">Почему мы</span>
       <h2>Цифры вместо обещаний</h2>
     </div>
-    <div class="why-grid why-grid-3">
+    <div class="why-grid reveal-stagger reveal">
       <div class="fact">
         <div class="figure">0</div>
         <div class="label">типовых решений — только индивидуальный пошив по вашим меркам</div>
@@ -490,25 +629,33 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 
 <section id="gallery" class="gallery">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <span class="rule"></span>
       <span class="eyebrow">Наши работы</span>
       <h2>Реальные проекты, не рендеры</h2>
       <p>Из последних заказов — дизайнерский текстиль для дома.</p>
     </div>
-    <div class="gallery-grid-2">
-      <img src="images/gallery-terracotta-sofa.jpg" alt="Шторы из дизайнерской ткани у окна">
-      <img src="images/interior-chair-closeup.jpg" alt="Кресло с декоративной подушкой из той же ткани">
+    <div class="gallery-grid-2 reveal-stagger reveal">
+      <div class="gallery-item">
+        <img src="images/gallery-terracotta-sofa.jpg" alt="Шторы из дизайнерской ткани у окна">
+        <div class="gallery-caption">Терракотовый лён, гостиная</div>
+      </div>
+      <div class="gallery-item">
+        <img src="images/interior-chair-closeup.jpg" alt="Кресло с декоративной подушкой из той же ткани">
+        <div class="gallery-caption">Штора и подушка в тон</div>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="process">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <span class="rule"></span>
       <span class="eyebrow">Как проходит заказ</span>
       <h2>От идеи до готового текстиля</h2>
     </div>
-    <div class="process-list">
+    <div class="process-list reveal-stagger reveal">
       <div class="process-item">
         <span class="step-num">01</span>
         <div><h3>Заявка</h3><p>Звонок или сообщение — расскажите, что нужно, покажите фото окна или комнаты.</p></div>
@@ -533,9 +680,37 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   </div>
 </section>
 
+<section class="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="rule"></span>
+      <span class="eyebrow">Вопросы</span>
+      <h2>Что чаще всего спрашивают</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>Выезжаете на замер бесплатно?<span class="plus"></span></summary>
+        <p>Да, замер по Москве и области — бесплатный, в любое удобное для вас время.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Можно шить из своей ткани?<span class="plus"></span></summary>
+        <p>Да, работаем и с вашей тканью, и помогаем подобрать из каталогов дизайнерских брендов — как вам удобнее.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Сколько времени занимает заказ?<span class="plus"></span></summary>
+        <p>Зависит от сложности изделия и наличия ткани — точные сроки обсуждаем после замера и выбора материала.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Есть готовые решения или всё индивидуально?<span class="plus"></span></summary>
+        <p>Только индивидуальный пошив по вашим меркам — типовых размеров и каталожных решений нет.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section class="area">
   <div class="wrap">
-    <div class="area-body">
+    <div class="area-body reveal">
       <div class="section-head" style="margin-bottom:0;">
         <span class="eyebrow">География</span>
         <h2>Москва и область</h2>
@@ -554,7 +729,7 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 </section>
 
 <section class="final-cta">
-  <div class="wrap">
+  <div class="wrap reveal">
     <span class="eyebrow">Готовы обсудить проект?</span>
     <h2>Расскажите про интерьер — подберём ткань и посчитаем</h2>
     <p>Замер бесплатный. Отвечаем за несколько часов, на связи каждый день с 08:00 до 23:00.</p>
@@ -564,6 +739,11 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     </div>
   </div>
 </section>
+
+<div class="sticky-cta">
+  <a class="btn btn-gold" href="tel:+79854189873">Позвонить</a>
+  <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a>
+</div>
 
 <footer>
   <div class="wrap footer-row">
@@ -575,6 +755,42 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     </div>
   </div>
 </footer>
+
+<script>
+(function(){
+  var reveals = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  var heroImg = document.getElementById('heroImg');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(heroImg && !reduceMotion){
+    var ticking = false;
+    window.addEventListener('scroll', function(){
+      if(!ticking){
+        window.requestAnimationFrame(function(){
+          var y = window.scrollY || 0;
+          var shift = Math.min(y * 0.18, 140);
+          heroImg.style.transform = 'translateY(' + shift + 'px)';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive:true });
+  }
+})();
+</script>
 
 </body>
 </html>
