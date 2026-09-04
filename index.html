@@ -172,9 +172,18 @@ section{ padding:100px 0; }
   text-transform:uppercase;
   letter-spacing:0.12em;
   color:var(--sage);
-  margin-bottom:10px;
+  margin-bottom:4px;
 }
-.master-card h3{ font-size:26px; margin-bottom:16px; color:var(--ink); }
+.master-head{ display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+.master-avatar{
+  width:60px; height:60px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--gold-soft);
+  flex-shrink:0;
+}
+.master-head-text{ min-width:0; }
+.master-card h3{ font-size:22px; margin-bottom:0; color:var(--ink); }
 .master-card p{ color:var(--ink-dim); font-size:15px; margin-bottom:18px; }
 .master-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
 .master-link{
@@ -368,7 +377,7 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     <div class="hero-inner">
       <span class="eyebrow">Пошив на заказ · Москва и область</span>
       <h1>Текстиль, который становится частью дома</h1>
-      <p class="hero-sub">Шторы, покрывала и абажуры на заказ — по вашим меркам, из дизайнерских тканей британских домов Harlequin, Clarke &amp; Clarke, Beaumont. Подбор ткани под готовый интерьер или с нуля.</p>
+      <p class="hero-sub">Шторы, покрывала и абажуры на заказ — по вашим меркам, из премиальных тканей ведущих европейских брендов. Подбор ткани под готовый интерьер или с нуля.</p>
       <div class="hero-ctas">
         <a class="btn btn-gold" href="tel:+79854189873">Обсудить проект</a>
         <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Написать в Телеграм</a>
@@ -388,9 +397,14 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     </div>
     <div class="masters-grid">
       <div class="master-card">
-        <div class="role">Дом</div>
-        <h3>Светлана — интерьерный текстиль</h3>
-        <p>Дизайнер-декоратор по тканям: шторы, покрывала, абажуры и подушки на заказ — из дизайнерских тканей британских домов Harlequin, Clarke &amp; Clarke, Beaumont. Подбор ткани под уже готовый интерьер или с нуля.</p>
+        <div class="master-head">
+          <img class="master-avatar" src="images/svetlana-avatar.jpg" alt="Светлана">
+          <div class="master-head-text">
+            <div class="role">Дом</div>
+            <h3>Светлана — интерьерный текстиль</h3>
+          </div>
+        </div>
+        <p>Дизайнер-декоратор по тканям: шторы, покрывала, абажуры и подушки на заказ — из премиальных тканей ведущих европейских брендов, широкий выбор фактур и рисунков. Подбор ткани под уже готовый интерьер или с нуля.</p>
         <div class="master-tags">
           <span class="tag">Шторы и римские шторы</span>
           <span class="tag">Покрывала</span>
@@ -399,8 +413,13 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
         <a class="master-link" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм-канал с проектами ↗</a>
       </div>
       <div class="master-card">
-        <div class="role">Улица</div>
-        <h3>Вадим — уличный текстиль</h3>
+        <div class="master-head">
+          <img class="master-avatar" src="images/vadim-avatar.jpg" alt="Вадим">
+          <div class="master-head-text">
+            <div class="role">Улица</div>
+            <h3>Вадим — уличный текстиль</h3>
+          </div>
+        </div>
         <p>Пошив и монтаж штор, тентов-крыш и чехлов для беседок, террас и качелей. 10+ лет в сфере, работа по договору. Сезон открывается по весне — сейчас можно обсудить проект заранее. Также Вадиму можно писать и по интерьерным шторам — он на связи со Светланой и поможет с любым вопросом по текстилю.</p>
         <div class="master-tags">
           <span class="tag">Беседки и террасы</span>
@@ -452,8 +471,8 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
         <div class="label">лет в пошиве текстиля на заказ</div>
       </div>
       <div class="fact">
-        <div class="figure">3</div>
-        <div class="label">британских бренда тканей в работе — Harlequin, Clarke &amp; Clarke, Beaumont</div>
+        <div class="figure">5.0</div>
+        <div class="label">рейтинг команды, 11 отзывов на Авито</div>
       </div>
       <div class="fact">
         <div class="figure">0</div>
