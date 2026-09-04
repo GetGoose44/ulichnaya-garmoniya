@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Уличная гармония</title>
 </head>
 <body>
@@ -356,9 +356,19 @@ section{ padding:100px 0; }
 .marquee-section{ padding:88px 0; overflow:hidden; }
 .marquee-section .wrap{ margin-bottom:40px; }
 .marquee-viewport{
-  overflow:hidden;
+  overflow-x:hidden;
+  overflow-y:hidden;
   -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  cursor:grab;
+}
+.marquee-viewport::-webkit-scrollbar{ display:none; }
+.marquee-viewport.user-controlled{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:none;
 }
 .marquee-track{
   display:flex;
@@ -367,12 +377,14 @@ section{ padding:100px 0; }
   animation:marqueeScroll 55s linear infinite;
 }
 .marquee-viewport:hover .marquee-track{ animation-play-state:paused; }
+.marquee-viewport.user-controlled .marquee-track{ animation:none !important; }
 .marquee-track img{
   height:280px;
   width:auto;
   border-radius:4px;
   box-shadow:var(--shadow-soft);
   flex-shrink:0;
+  pointer-events:none;
 }
 @keyframes marqueeScroll{
   from{ transform:translateX(0); }
@@ -521,15 +533,27 @@ section{ padding:100px 0; }
 .final-cta .btn-gold{ font-size:17px; padding:19px 36px; }
 
 /* ============ STICKY MOBILE CTA ============ */
+/* Split into a solid button row + a transparent safe-area spacer, so iOS Safari's
+   toolbar show/hide never reveals or shifts a hard-edged color block underneath. */
 .sticky-cta{
   position:fixed; left:0; right:0; bottom:0;
   z-index:150;
   display:none;
+  flex-direction:column;
+  background:transparent;
+}
+.sticky-cta-row{
+  display:flex;
   gap:10px;
-  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  padding:12px 16px;
   background:var(--surface-raised);
   border-top:1px solid var(--line-strong);
   box-shadow:0 -10px 30px rgba(0,0,0,0.45);
+}
+.sticky-cta-safe-area{
+  height:env(safe-area-inset-bottom, 0px);
+  background:transparent;
+  flex-shrink:0;
 }
 .sticky-cta .btn{ flex:1; justify-content:center; padding:14px 12px; font-size:14px; }
 
@@ -549,7 +573,7 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 }
 @media (max-width:640px){
   .sticky-cta{ display:flex; }
-  body{ padding-bottom:78px; }
+  body{ padding-bottom:calc(74px + env(safe-area-inset-bottom, 0px)); }
 }
 </style>
 
@@ -818,8 +842,11 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 </section>
 
 <div class="sticky-cta">
-  <a class="btn btn-gold" href="tel:+79108481207">Позвонить</a>
-  <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a>
+  <div class="sticky-cta-row">
+    <a class="btn btn-gold" href="tel:+79108481207">Позвонить</a>
+    <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a>
+  </div>
+  <div class="sticky-cta-safe-area"></div>
 </div>
 
 <footer>
@@ -864,6 +891,37 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
           ticking = false;
         });
         ticking = true;
+      }
+    }, { passive:true });
+  }
+
+  var mViewport = document.querySelector('.marquee-viewport');
+  var mTrack = document.querySelector('.marquee-track');
+  if(mViewport && mTrack){
+    var userControlled = false;
+    var activate = function(){
+      if(userControlled) return;
+      userControlled = true;
+      var currentX = 0;
+      var st = window.getComputedStyle(mTrack).transform;
+      if(st && st !== 'none'){
+        var m = st.match(/matrix\(([^)]+)\)/);
+        if(m){ currentX = parseFloat(m[1].split(',')[4]) || 0; }
+      }
+      mTrack.style.transform = 'none';
+      mViewport.classList.add('user-controlled');
+      mViewport.scrollLeft = -currentX;
+    };
+    mViewport.addEventListener('touchstart', activate, { passive:true });
+    mViewport.addEventListener('pointerdown', activate);
+
+    mViewport.addEventListener('scroll', function(){
+      if(!userControlled) return;
+      var half = mTrack.scrollWidth / 2;
+      if(mViewport.scrollLeft <= 2){
+        mViewport.scrollLeft += half;
+      } else if(mViewport.scrollLeft >= half - 2){
+        mViewport.scrollLeft -= half;
       }
     }, { passive:true });
   }
