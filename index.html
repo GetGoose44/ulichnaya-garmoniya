@@ -388,7 +388,7 @@ section{ padding:100px 0; }
 }
 @keyframes marqueeScroll{
   from{ transform:translateX(0); }
-  to{ transform:translateX(-50%); }
+  to{ transform:translateX(-33.3334%); }
 }
 @media (prefers-reduced-motion: reduce){
   .marquee-track{ animation:none; }
@@ -724,6 +724,17 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
       <img src="images/marquee/m09.jpg" alt="" aria-hidden="true">
       <img src="images/marquee/m10.jpg" alt="" aria-hidden="true">
       <img src="images/marquee/m11.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m01.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m02.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m03.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m04.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m05.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m06.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m07.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m08.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m09.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m10.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m11.jpg" alt="" aria-hidden="true">
     </div>
   </div>
 </section>
@@ -898,6 +909,9 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   var mViewport = document.querySelector('.marquee-viewport');
   var mTrack = document.querySelector('.marquee-track');
   if(mViewport && mTrack){
+    // Three identical copies of the strip sit back to back. User control always
+    // starts centered on the middle copy, so there's always real content to drag
+    // into on both sides — no dead end at the start, no dead end at the end.
     var userControlled = false;
     var activate = function(){
       if(userControlled) return;
@@ -908,9 +922,11 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
         var m = st.match(/matrix\(([^)]+)\)/);
         if(m){ currentX = parseFloat(m[1].split(',')[4]) || 0; }
       }
+      var third = mTrack.scrollWidth / 3;
+      var offsetWithinCopy = (-currentX) % third;
       mTrack.style.transform = 'none';
       mViewport.classList.add('user-controlled');
-      mViewport.scrollLeft = -currentX;
+      mViewport.scrollLeft = third + offsetWithinCopy;
     };
     mViewport.addEventListener('touchstart', activate, { passive:true });
     mViewport.addEventListener('pointerdown', activate);
@@ -919,16 +935,15 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     // on every scroll event fights iOS's native momentum/rubber-band animation
     // mid-gesture, which is what causes visible stutter at the ends of the strip.
     var wrapTimer = null;
-    var wrapBuffer = 32;
     mViewport.addEventListener('scroll', function(){
       if(!userControlled) return;
       if(wrapTimer) clearTimeout(wrapTimer);
       wrapTimer = setTimeout(function(){
-        var half = mTrack.scrollWidth / 2;
-        if(mViewport.scrollLeft < wrapBuffer){
-          mViewport.scrollLeft += half;
-        } else if(mViewport.scrollLeft > half - wrapBuffer){
-          mViewport.scrollLeft -= half;
+        var third = mTrack.scrollWidth / 3;
+        if(mViewport.scrollLeft < third){
+          mViewport.scrollLeft += third;
+        } else if(mViewport.scrollLeft > third * 2){
+          mViewport.scrollLeft -= third;
         }
       }, 140);
     }, { passive:true });
