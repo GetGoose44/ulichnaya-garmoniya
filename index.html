@@ -915,14 +915,22 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
     mViewport.addEventListener('touchstart', activate, { passive:true });
     mViewport.addEventListener('pointerdown', activate);
 
+    // Only correct the loop position once scrolling has fully settled — doing it
+    // on every scroll event fights iOS's native momentum/rubber-band animation
+    // mid-gesture, which is what causes visible stutter at the ends of the strip.
+    var wrapTimer = null;
+    var wrapBuffer = 32;
     mViewport.addEventListener('scroll', function(){
       if(!userControlled) return;
-      var half = mTrack.scrollWidth / 2;
-      if(mViewport.scrollLeft <= 2){
-        mViewport.scrollLeft += half;
-      } else if(mViewport.scrollLeft >= half - 2){
-        mViewport.scrollLeft -= half;
-      }
+      if(wrapTimer) clearTimeout(wrapTimer);
+      wrapTimer = setTimeout(function(){
+        var half = mTrack.scrollWidth / 2;
+        if(mViewport.scrollLeft < wrapBuffer){
+          mViewport.scrollLeft += half;
+        } else if(mViewport.scrollLeft > half - wrapBuffer){
+          mViewport.scrollLeft -= half;
+        }
+      }, 140);
     }, { passive:true });
   }
 })();
