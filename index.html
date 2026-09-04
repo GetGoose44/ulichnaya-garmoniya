@@ -352,6 +352,39 @@ section{ padding:100px 0; }
 }
 .fact .label{ font-size:14px; color:var(--ink-dim); line-height:1.5; }
 
+/* ============ MARQUEE (continuous work strip) ============ */
+.marquee-section{ padding:88px 0; overflow:hidden; }
+.marquee-section .wrap{ margin-bottom:40px; }
+.marquee-viewport{
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee-track{
+  display:flex;
+  gap:16px;
+  width:max-content;
+  animation:marqueeScroll 55s linear infinite;
+}
+.marquee-viewport:hover .marquee-track{ animation-play-state:paused; }
+.marquee-track img{
+  height:280px;
+  width:auto;
+  border-radius:4px;
+  box-shadow:var(--shadow-soft);
+  flex-shrink:0;
+}
+@keyframes marqueeScroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce){
+  .marquee-track{ animation:none; }
+}
+@media (max-width:640px){
+  .marquee-track img{ height:190px; }
+}
+
 /* ============ GALLERY ============ */
 .gallery-grid-2{
   display:grid;
@@ -630,6 +663,43 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
         <div class="figure">Вручную</div>
         <div class="label">раскрой и пошив, ручная сборка каждого изделия</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="marquee-section">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin-bottom:0;">
+      <span class="rule"></span>
+      <span class="eyebrow">Портфолио</span>
+      <h2>Ещё немного из того, что мы шьём</h2>
+      <p>Подборка объектов за последние месяцы — из телеграм-каналов студии.</p>
+    </div>
+  </div>
+  <div class="marquee-viewport">
+    <div class="marquee-track">
+      <img src="images/marquee/m01.jpg" alt="Шторы в интерьере гостиной" loading="lazy">
+      <img src="images/marquee/m02.jpg" alt="Шторы у обеденной зоны" loading="lazy">
+      <img src="images/marquee/m03.jpg" alt="Шторы в детской комнате" loading="lazy">
+      <img src="images/marquee/m04.jpg" alt="Плотные шторы в спальне" loading="lazy">
+      <img src="images/marquee/m05.jpg" alt="Шторы у балконной двери на закате" loading="lazy">
+      <img src="images/marquee/m06.jpg" alt="Шторы в интерьере с камином" loading="lazy">
+      <img src="images/marquee/m07.jpg" alt="Терракотовые шторы у окна" loading="lazy">
+      <img src="images/marquee/m08.jpg" alt="Шторы и кресло в гостиной" loading="lazy">
+      <img src="images/marquee/m09.jpg" alt="Абажур на заказ из дизайнерской ткани" loading="lazy">
+      <img src="images/marquee/m10.jpg" alt="Шторы из принтованной ткани с креслом в тон" loading="lazy">
+      <img src="images/marquee/m11.jpg" alt="Штора из узорчатой ткани крупным планом" loading="lazy">
+      <img src="images/marquee/m01.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m02.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m03.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m04.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m05.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m06.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m07.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m08.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m09.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m10.jpg" alt="" aria-hidden="true">
+      <img src="images/marquee/m11.jpg" alt="" aria-hidden="true">
     </div>
   </div>
 </section>
