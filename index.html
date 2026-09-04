@@ -48,6 +48,10 @@ body::before{
   mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+/* Fixed + mix-blend-mode forces a full-viewport repaint on every scroll frame on mobile GPUs — visible as jitter. Drop it there. */
+@media (max-width:860px), (pointer:coarse){
+  body::before{ display:none; }
+}
 img{max-width:100%; display:block;}
 .wrap{ max-width:1160px; margin:0 auto; padding:0 28px; }
 
@@ -524,7 +528,7 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
       <h1>Текстиль, который становится частью дома</h1>
       <p class="hero-sub">Шторы, покрывала и абажуры на заказ — по вашим меркам, из премиальных тканей ведущих европейских брендов. Подбор ткани под готовый интерьер или с нуля.</p>
       <div class="hero-ctas">
-        <a class="btn btn-gold" href="tel:+79854189873">Обсудить проект</a>
+        <a class="btn btn-gold" href="tel:+79108481207">Обсудить проект</a>
         <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Написать в Телеграм</a>
       </div>
       <p class="btn-note" style="margin-top:16px;">Светлана — дизайнер-декоратор по тканям · отвечает за несколько часов</p>
@@ -752,7 +756,7 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   <div class="wrap footer-row">
     <div class="footer-brand">Уличная гармония</div>
     <div class="contact">
-      Москва и область · Светлана: <a href="tel:+79854189873">+7 985 418-98-73</a> · Вадим: <a href="tel:+79108481207">+7 910 848-12-07</a>
+      Москва и область · Вадим: <a href="tel:+79108481207">+7 910 848-12-07</a>
       <br>
       работаем 08:00–23:00 ежедневно · <a href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a>
     </div>
@@ -778,7 +782,8 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
 
   var heroImg = document.getElementById('heroImg');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(heroImg && !reduceMotion){
+  var isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  if(heroImg && !reduceMotion && !isCoarsePointer){
     var ticking = false;
     window.addEventListener('scroll', function(){
       if(!ticking){
