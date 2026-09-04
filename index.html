@@ -161,6 +161,11 @@ section{ padding:100px 0; }
   border-radius:4px;
   overflow:hidden;
 }
+.masters-grid-solo{
+  grid-template-columns:1fr;
+  max-width:620px;
+  margin:0 auto;
+}
 .master-card{
   background:var(--surface);
   padding:44px 40px;
@@ -234,6 +239,7 @@ section{ padding:100px 0; }
   grid-template-columns:repeat(4, 1fr);
   gap:36px;
 }
+.why-grid-3{ grid-template-columns:repeat(3, 1fr); }
 .fact .figure{
   font-family:'Bodoni Moda', serif;
   font-size:44px;
@@ -241,6 +247,7 @@ section{ padding:100px 0; }
   line-height:1;
   margin-bottom:12px;
 }
+.why-grid-3 .fact .figure{ font-size:34px; }
 .fact .label{ font-size:14px; color:var(--ink-dim); line-height:1.5; }
 
 /* ============ GALLERY ============ */
@@ -392,15 +399,15 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Кто шьёт</span>
-      <h2>Два мастера, одна мастерская</h2>
-      <p>«Уличная гармония» — команда партнёров: Светлана отвечает за дом, Вадим — за улицу. Работаем вместе больше 10 лет, каждый — в своей стихии.</p>
+      <h2>Мастер за каждым проектом</h2>
+      <p>«Уличная гармония» — студия интерьерного текстиля на заказ. За каждым проектом стоит внимание к деталям и подбор ткани под конкретный интерьер, а не каталог типовых решений.</p>
     </div>
-    <div class="masters-grid">
+    <div class="masters-grid masters-grid-solo">
       <div class="master-card">
         <div class="master-head">
           <img class="master-avatar" src="images/svetlana-avatar.jpg" alt="Светлана">
           <div class="master-head-text">
-            <div class="role">Дом</div>
+            <div class="role">Дизайнер-декоратор</div>
             <h3>Светлана — интерьерный текстиль</h3>
           </div>
         </div>
@@ -411,21 +418,6 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
           <span class="tag">Абажуры на заказ</span>
         </div>
         <a class="master-link" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм-канал с проектами ↗</a>
-      </div>
-      <div class="master-card">
-        <div class="master-head">
-          <img class="master-avatar" src="images/vadim-avatar.jpg" alt="Вадим">
-          <div class="master-head-text">
-            <div class="role">Улица</div>
-            <h3>Вадим — уличный текстиль</h3>
-          </div>
-        </div>
-        <p>Пошив и монтаж штор, тентов-крыш и чехлов для беседок, террас и качелей. 10+ лет в сфере, работа по договору. Сезон открывается по весне — сейчас можно обсудить проект заранее. Также Вадиму можно писать и по интерьерным шторам — он на связи со Светланой и поможет с любым вопросом по текстилю.</p>
-        <div class="master-tags">
-          <span class="tag">Беседки и террасы</span>
-          <span class="tag">Тенты-крыши</span>
-        </div>
-        <a class="master-link" href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">Профиль на Авито — 5.0, 11 отзывов ↗</a>
       </div>
     </div>
   </div>
@@ -465,22 +457,18 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
       <span class="eyebrow">Почему мы</span>
       <h2>Цифры вместо обещаний</h2>
     </div>
-    <div class="why-grid">
-      <div class="fact">
-        <div class="figure">10+</div>
-        <div class="label">лет в пошиве текстиля на заказ</div>
-      </div>
-      <div class="fact">
-        <div class="figure">5.0</div>
-        <div class="label">рейтинг команды, 11 отзывов на Авито</div>
-      </div>
+    <div class="why-grid why-grid-3">
       <div class="fact">
         <div class="figure">0</div>
         <div class="label">типовых решений — только индивидуальный пошив по вашим меркам</div>
       </div>
       <div class="fact">
         <div class="figure">100%</div>
-        <div class="label">работа по договору, с гарантией на изделие</div>
+        <div class="label">ткань и цвет подбираются под ваш интерьер, а не по каталогу</div>
+      </div>
+      <div class="fact">
+        <div class="figure">Вручную</div>
+        <div class="label">раскрой и пошив, ручная сборка каждого изделия</div>
       </div>
     </div>
   </div>
@@ -571,9 +559,6 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
       <br>
       <a href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a>
     </div>
-  </div>
-  <div class="wrap">
-    <p class="outdoor-note">Также шьём и монтируем уличные шторы, тенты-крыши и чехлы для беседок и террас (сезон открывается по весне) — Вадим, <a href="tel:+79108481207">+7 910 848-12-07</a> (пишите ему и по интерьерным шторам — он на связи со Светланой), примеры работ и 11 отзывов — <a href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">на Авито ↗</a></p>
   </div>
 </footer>
 
