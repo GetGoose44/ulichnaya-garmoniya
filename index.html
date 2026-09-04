@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Уличная гармония</title>
+</head>
+<body>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600;6..96,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --ground:#1C1712;
+  --surface:#241E17;
+  --surface-raised:#2D251C;
+  --ink:#F3EAD9;
+  --ink-dim:#B5A793;
+  --ink-faint:#8A7C68;
+  --gold:#C89A4C;
+  --gold-soft:#8F6F35;
+  --gold-bright:#E0BE7A;
+  --sage:#8C9A78;
+  --line:rgba(243,234,217,0.14);
+  --line-strong:rgba(243,234,217,0.24);
+  --shadow:0 24px 60px rgba(0,0,0,0.5);
+  --shadow-soft:0 12px 32px rgba(0,0,0,0.35);
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:'Manrope', sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%; display:block;}
+.wrap{ max-width:1160px; margin:0 auto; padding:0 28px; }
+
+h1,h2,h3{
+  font-family:'Bodoni Moda', serif;
+  font-weight:600;
+  text-wrap:balance;
+  letter-spacing:-0.01em;
+}
+
+.eyebrow{
+  font-family:'Manrope', sans-serif;
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.14em;
+  color:var(--gold);
+}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute; inset:0;
+}
+.hero-bg img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:center 62%;
+}
+.hero-bg::after{
+  content:'';
+  position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(20,16,11,0.35) 0%, rgba(20,16,11,0.25) 30%, rgba(20,16,11,0.85) 78%, #1C1712 100%);
+}
+.hero-content{
+  position:relative;
+  z-index:2;
+  width:100%;
+  padding:0 28px 72px;
+}
+.hero-inner{ max-width:1160px; margin:0 auto; }
+.hero .eyebrow{ color:var(--gold-bright,#E0BE7A); display:block; margin-bottom:18px; }
+.hero h1{
+  font-size:clamp(36px, 5.4vw, 68px);
+  line-height:1.06;
+  max-width:16ch;
+  margin-bottom:22px;
+  color:#fff;
+}
+.hero-sub{
+  font-size:17px;
+  color:var(--ink-dim);
+  max-width:52ch;
+  margin-bottom:34px;
+}
+.hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Manrope', sans-serif;
+  font-weight:700;
+  font-size:15px;
+  padding:16px 28px;
+  border-radius:3px;
+  text-decoration:none;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:transform 0.15s ease, background 0.15s ease;
+}
+.btn:hover{ transform:translateY(-1px); }
+.btn-gold{
+  background:linear-gradient(180deg, #D4A857, var(--gold));
+  color:#231A0D;
+}
+.btn-gold:hover{ background:linear-gradient(180deg, #E0B968, #D4A857); }
+.btn-ghost{
+  background:transparent;
+  border-color:var(--line-strong);
+  color:var(--ink);
+}
+.btn-ghost:hover{ border-color:var(--gold); color:var(--gold-bright,#E0BE7A); }
+.btn-note{ font-size:13px; color:var(--ink-faint); }
+
+.scroll-cue{
+  position:absolute;
+  bottom:26px; left:50%;
+  transform:translateX(-50%);
+  z-index:2;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  color:var(--ink-faint);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.scroll-cue .line{ width:1px; height:34px; background:linear-gradient(var(--gold), transparent); }
+
+/* ============ SECTION SHELL ============ */
+section{ padding:100px 0; }
+.section-head{ max-width:640px; margin-bottom:56px; }
+.section-head h2{ font-size:clamp(28px,3.6vw,42px); margin-top:14px; }
+.section-head p{ color:var(--ink-dim); margin-top:16px; font-size:16px; max-width:56ch; }
+
+/* ============ MASTERS (two-column intro) ============ */
+.masters{ background:var(--surface); }
+.masters-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:4px;
+  overflow:hidden;
+}
+.master-card{
+  background:var(--surface);
+  padding:44px 40px;
+}
+.master-card .role{
+  font-family:'Manrope', sans-serif;
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--sage);
+  margin-bottom:10px;
+}
+.master-card h3{ font-size:26px; margin-bottom:16px; color:var(--ink); }
+.master-card p{ color:var(--ink-dim); font-size:15px; margin-bottom:18px; }
+.master-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.master-link{
+  display:inline-block;
+  font-size:13px;
+  font-weight:700;
+  color:var(--gold-bright,#E0BE7A);
+  text-decoration:none;
+  border-bottom:1px solid var(--gold-soft);
+  padding-bottom:2px;
+}
+.master-link:hover{ color:var(--gold); }
+.tag{
+  font-size:12px;
+  padding:6px 12px;
+  border:1px solid var(--line-strong);
+  border-radius:20px;
+  color:var(--ink-dim);
+  font-weight:600;
+}
+
+/* ============ SERVICES ============ */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+}
+.service{
+  background:var(--ground);
+  padding:36px 32px;
+}
+.service .num{
+  font-family:'Bodoni Moda', serif;
+  font-size:14px;
+  color:var(--gold);
+  margin-bottom:20px;
+  display:block;
+}
+.service h3{ font-size:19px; font-weight:500; margin-bottom:10px; color:var(--ink); }
+.service p{ font-size:14px; color:var(--ink-dim); }
+
+/* ============ WHY (facts) ============ */
+.why{ background:var(--surface); }
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:36px;
+}
+.fact .figure{
+  font-family:'Bodoni Moda', serif;
+  font-size:44px;
+  color:var(--gold);
+  line-height:1;
+  margin-bottom:12px;
+}
+.fact .label{ font-size:14px; color:var(--ink-dim); line-height:1.5; }
+
+/* ============ GALLERY ============ */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:14px;
+}
+.gallery-grid img{
+  width:100%; height:100%;
+  object-fit:cover;
+  border-radius:4px;
+  box-shadow:var(--shadow-soft);
+}
+.g1{ grid-row:1 / 3; }
+.g1 img{ height:100%; min-height:520px; }
+.g2 img, .g3 img{ height:250px; }
+
+/* ============ TESTIMONIALS ============ */
+.testimonials{ background:var(--surface); }
+.t-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+}
+.t-card{
+  background:var(--surface);
+  padding:36px 40px;
+}
+.t-stars{ color:var(--gold); font-size:14px; letter-spacing:2px; margin-bottom:16px; }
+.t-card p.quote{ font-size:16px; color:var(--ink); margin-bottom:20px; font-family:'Bodoni Moda', serif; font-weight:400; line-height:1.5; }
+.t-card .who{ font-size:13px; color:var(--ink-dim); font-weight:700; }
+.t-card .what{ font-size:12px; color:var(--ink-faint); margin-top:2px; }
+
+/* ============ PROCESS ============ */
+.process-list{ display:flex; flex-direction:column; }
+.process-item{
+  display:grid;
+  grid-template-columns:90px 1fr;
+  gap:28px;
+  padding:28px 0;
+  border-top:1px solid var(--line);
+  align-items:baseline;
+}
+.process-item:last-child{ border-bottom:1px solid var(--line); }
+.process-item .step-num{
+  font-family:'Bodoni Moda', serif;
+  font-size:32px;
+  color:var(--gold);
+}
+.process-item h3{ font-size:19px; font-weight:500; margin-bottom:6px; color:var(--ink); }
+.process-item p{ font-size:14px; color:var(--ink-dim); max-width:52ch; }
+.process-item .badge{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--sage);
+  font-weight:700;
+  margin-left:12px;
+}
+
+/* ============ AREA ============ */
+.area{ background:var(--surface); }
+.area-body{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; align-items:flex-start; }
+.area-cities{ display:flex; flex-wrap:wrap; gap:10px; max-width:600px; }
+.city-chip{
+  font-size:13px;
+  padding:8px 16px;
+  background:var(--surface-raised);
+  border:1px solid var(--line);
+  border-radius:20px;
+  color:var(--ink-dim);
+}
+.city-chip.main{ color:var(--gold-bright,#E0BE7A); border-color:var(--gold-soft); }
+
+/* ============ FINAL CTA ============ */
+.final-cta{
+  background:linear-gradient(160deg, #2A2115, var(--ground) 60%);
+  text-align:center;
+  padding:120px 0;
+  border-top:1px solid var(--line);
+}
+.final-cta .eyebrow{ display:block; margin-bottom:18px; }
+.final-cta h2{ font-size:clamp(30px,4.4vw,50px); max-width:18ch; margin:0 auto 22px; }
+.final-cta p{ color:var(--ink-dim); max-width:48ch; margin:0 auto 36px; font-size:16px; }
+.final-cta .btn-gold{ font-size:17px; padding:19px 36px; }
+
+/* ============ FOOTER ============ */
+footer{ padding:44px 0; border-top:1px solid var(--line); }
+.footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+.footer-brand{ font-family:'Bodoni Moda', serif; font-size:18px; }
+footer .contact{ font-size:13px; color:var(--ink-dim); }
+footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line-strong); }
+
+@media (max-width: 860px){
+  .masters-grid, .services-grid, .why-grid, .t-grid{ grid-template-columns:1fr; }
+  .gallery-grid{ grid-template-columns:1fr 1fr; }
+  .g1{ grid-column:1/3; grid-row:auto; }
+  .g1 img{ min-height:320px; }
+  .process-item{ grid-template-columns:50px 1fr; }
+  section{ padding:64px 0; }
+}
+</style>
+
+<div class="hero">
+  <div class="hero-bg"><img src="images/hero-pergola.jpg" alt="Терраса с уличными шторами на закате"></div>
+  <div class="hero-content">
+    <div class="hero-inner">
+      <span class="eyebrow">Пошив и монтаж на заказ · Москва и область</span>
+      <h1>Текстиль для дома — от гостиной до беседки</h1>
+      <p class="hero-sub">Уличные шторы и тенты, которые выдерживают дождь и не снимаются на зиму. Дизайнерские шторы, покрывала и абажуры для интерьера — по вашим меркам и тканям. Один звонок — обе истории.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="tel:+79108481207">Записаться на бесплатный замер</a>
+        <a class="btn btn-ghost" href="#gallery">Смотреть работы</a>
+      </div>
+      <p class="btn-note" style="margin-top:16px;">Вадим — уличный текстиль · +7 910 848-12-07 · отвечает за несколько часов</p>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="line"></span>Листайте вниз</div>
+</div>
+
+<section class="masters">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Кто шьёт</span>
+      <h2>Два мастера, одна мастерская</h2>
+      <p>«Уличная гармония» — семейная история: Вадим отвечает за улицу, Светлана — за дом. Работаем вместе больше 10 лет, каждый — в своей стихии.</p>
+    </div>
+    <div class="masters-grid">
+      <div class="master-card">
+        <div class="role">Улица</div>
+        <h3>Вадим — уличный текстиль</h3>
+        <p>Пошив и монтаж штор, тентов-крыш и чехлов для беседок, террас, качелей и кафе. Выезд на замер, установка в тот же выезд, 10+ лет в сфере, работа по договору. 5.0 и 11 отзывов на Авито.</p>
+        <div class="master-tags">
+          <span class="tag">Беседки и террасы</span>
+          <span class="tag">Тенты-крыши</span>
+          <span class="tag">Чехлы</span>
+        </div>
+        <a class="master-link" href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">Профиль на Авито — 5.0, 11 отзывов ↗</a>
+      </div>
+      <div class="master-card">
+        <div class="role">Дом</div>
+        <h3>Светлана — интерьерный текстиль</h3>
+        <p>Дизайнер-декоратор по тканям: шторы, покрывала, абажуры и подушки на заказ — из дизайнерских тканей британских домов Harlequin, Clarke &amp; Clarke, Beaumont. Подбор ткани под уже готовый интерьер или с нуля.</p>
+        <div class="master-tags">
+          <span class="tag">Шторы и римские шторы</span>
+          <span class="tag">Покрывала</span>
+          <span class="tag">Абажуры на заказ</span>
+        </div>
+        <a class="master-link" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм-канал с проектами ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Что шьём</span>
+      <h2>Полный цикл — от эскиза до монтажа</h2>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;">
+    <div class="services-grid">
+      <div class="service">
+        <span class="num">01</span>
+        <h3>Уличные шторы</h3>
+        <p>Для беседок, террас и веранд. Всесезонные ткани — можно не снимать на зиму.</p>
+      </div>
+      <div class="service">
+        <span class="num">02</span>
+        <h3>Тенты-крыши</h3>
+        <p>Для беседок, качелей и летних кафе. Каркас, раскрой и монтаж под ключ.</p>
+      </div>
+      <div class="service">
+        <span class="num">03</span>
+        <h3>Чехлы на мебель</h3>
+        <p>Для уличной мебели и качелей — защита от дождя и солнца по размеру.</p>
+      </div>
+      <div class="service">
+        <span class="num">04</span>
+        <h3>Интерьерные шторы</h3>
+        <p>Классические и римские, из дизайнерских тканей — под готовый интерьер.</p>
+      </div>
+      <div class="service">
+        <span class="num">05</span>
+        <h3>Покрывала и подушки</h3>
+        <p>В тон шторам или отдельным акцентом — по вашим тканям или из каталога.</p>
+      </div>
+      <div class="service">
+        <span class="num">06</span>
+        <h3>Абажуры на заказ</h3>
+        <p>Нестандартные размеры и форма, без видимых каркасных рёбер и швов.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Почему мы</span>
+      <h2>Цифры вместо обещаний</h2>
+    </div>
+    <div class="why-grid">
+      <div class="fact">
+        <div class="figure">10+</div>
+        <div class="label">лет в пошиве и монтаже уличного текстиля</div>
+      </div>
+      <div class="fact">
+        <div class="figure">3 дня</div>
+        <div class="label">от замера до монтажа — по отзывам клиентов</div>
+      </div>
+      <div class="fact">
+        <div class="figure">5.0</div>
+        <div class="label">рейтинг и 11 отзывов на Авито</div>
+      </div>
+      <div class="fact">
+        <div class="figure">100%</div>
+        <div class="label">работа по договору, с гарантией на изделие</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" class="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Наши работы</span>
+      <h2>Реальные объекты, не рендеры</h2>
+      <p>Фото с последних заказов — беседки и террасы в Москве и области.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="g1"><img src="images/vadim-wood-gazebo.jpg" alt="Терраса с уличными шторами на закате"></div>
+      <div class="g2"><img src="images/terrace-white.jpg" alt="Терраса с белыми уличными шторами"></div>
+      <div class="g3"><img src="images/vadim-round-gazebo.jpg" alt="Вадим у беседки с тёмно-синими шторами"></div>
+      <div class="g2" style="grid-column:2/4;"><img src="images/hero-pergola.jpg" alt="Вадим у деревянной беседки с серыми шторами" style="height:250px; width:100%;"></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Отзывы</span>
+      <h2>Что говорят клиенты</h2>
+    </div>
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="quote">«Очень довольна шторами для крытой террасы: специалисты опытные, корректные, настоящие профессионалы своего дела. Результат работы отлично видно на фото и выше всяких похвал.»</p>
+        <div class="who">Мария Дайн</div>
+        <div class="what">Пошив тентов-крыш для беседок под ключ</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="quote">«Сделали в срок. Работа качественная. Швы на шторах ровные. Ткани добротные. Выбрал Оксфорд.»</p>
+        <div class="who">Александр</div>
+        <div class="what">Пошив уличных штор для террас и беседок</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="quote">«Очень довольна качеством и внешним видом тента. Искала именно всесезонный, чтоб не снимать на зиму. Всё выполнено в срок, монтаж — быстро и качественно.»</p>
+        <div class="who">Людмила Исакина</div>
+        <div class="what">Пошив тентов-крыш для кафе, качелей и беседок</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="quote">«Сделали всё очень быстро! От замера до монтажа — 3 дня. Ребята приехали вовремя, монтаж выполнили аккуратно, за собой убрали мусор. Качество отличное.»</p>
+        <div class="who">Роман</div>
+        <div class="what">Пошив и монтаж уличных штор, крыш, тентов</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Как проходит заказ</span>
+      <h2>Пять шагов до готовой беседки</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-item">
+        <span class="step-num">01</span>
+        <div><h3>Заявка</h3><p>Звонок или сообщение — расскажите, что нужно и покажите фото беседки, террасы или окна.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step-num">02</span>
+        <div><h3>Замер <span class="badge">Бесплатно</span></h3><p>Выезжаем на объект по Москве и области, снимаем точные размеры, обсуждаем ткань и цвет.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step-num">03</span>
+        <div><h3>Расчёт и договор</h3><p>Честная стоимость по факту размеров и выбранной ткани — без сюрпризов в конце. Работаем по договору.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step-num">04</span>
+        <div><h3>Пошив</h3><p>Кроим и шьём под ваш объект — без типовых размеров и компромиссов по посадке.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step-num">05</span>
+        <div><h3>Монтаж <span class="badge">от 3 дней</span></h3><p>Устанавливаем на месте и убираем за собой. Изделие с гарантией.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="area">
+  <div class="wrap">
+    <div class="area-body">
+      <div class="section-head" style="margin-bottom:0;">
+        <span class="eyebrow">География</span>
+        <h2>Москва и область</h2>
+        <p>Выезжаем на замер по всему городу и области. Уже работали здесь:</p>
+      </div>
+      <div class="area-cities">
+        <span class="city-chip main">Москва</span>
+        <span class="city-chip">Серпухов</span>
+        <span class="city-chip">Пушкино</span>
+        <span class="city-chip">Раменское</span>
+        <span class="city-chip">Домодедово</span>
+        <span class="city-chip">+ вся область</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap">
+    <span class="eyebrow">Готовы обсудить проект?</span>
+    <h2>Расскажите, что за объект — посчитаем и приедем на замер</h2>
+    <p>Замер бесплатный. Отвечаем за несколько часов, на связи каждый день с 08:00 до 23:00.</p>
+    <div class="hero-ctas" style="justify-content:center; margin-top:8px;">
+      <a class="btn btn-gold" href="tel:+79108481207">Позвонить: +7 910 848-12-07</a>
+      <a class="btn btn-ghost" href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Написать в Телеграм</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-brand">Уличная гармония</div>
+    <div class="contact">
+      Москва и область · <a href="tel:+79108481207">+7 910 848-12-07</a> · работаем 08:00–23:00 ежедневно
+      <br>
+      <a href="https://t.me/mebel_kak_istoriya" target="_blank" rel="noopener">Телеграм</a> ·
+      <a href="https://www.avito.ru/user/c483c2c7e0581366ae2a00a5313a4802/profile?src=sharing" target="_blank" rel="noopener">Авито-профиль</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
