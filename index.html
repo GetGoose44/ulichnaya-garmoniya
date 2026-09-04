@@ -356,20 +356,15 @@ section{ padding:100px 0; }
 .marquee-section{ padding:88px 0; overflow:hidden; }
 .marquee-section .wrap{ margin-bottom:40px; }
 .marquee-viewport{
-  overflow-x:hidden;
-  overflow-y:hidden;
+  overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  scrollbar-width:none;
-  -ms-overflow-style:none;
   cursor:grab;
+  touch-action:pan-y;
+  -webkit-user-select:none;
+  user-select:none;
 }
-.marquee-viewport::-webkit-scrollbar{ display:none; }
-.marquee-viewport.user-controlled{
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  scroll-snap-type:none;
-}
+.marquee-viewport.dragging{ cursor:grabbing; }
 .marquee-track{
   display:flex;
   gap:16px;
@@ -385,6 +380,7 @@ section{ padding:100px 0; }
   box-shadow:var(--shadow-soft);
   flex-shrink:0;
   pointer-events:none;
+  -webkit-user-drag:none;
 }
 @keyframes marqueeScroll{
   from{ transform:translateX(0); }
@@ -909,44 +905,93 @@ footer .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px sol
   var mViewport = document.querySelector('.marquee-viewport');
   var mTrack = document.querySelector('.marquee-track');
   if(mViewport && mTrack){
-    // Three identical copies of the strip sit back to back. User control always
-    // starts centered on the middle copy, so there's always real content to drag
-    // into on both sides — no dead end at the start, no dead end at the end.
-    var userControlled = false;
-    var activate = function(){
-      if(userControlled) return;
-      userControlled = true;
-      var currentX = 0;
-      var st = window.getComputedStyle(mTrack).transform;
-      if(st && st !== 'none'){
-        var m = st.match(/matrix\(([^)]+)\)/);
-        if(m){ currentX = parseFloat(m[1].split(',')[4]) || 0; }
-      }
-      var third = mTrack.scrollWidth / 3;
-      var offsetWithinCopy = (-currentX) % third;
-      mTrack.style.transform = 'none';
-      mViewport.classList.add('user-controlled');
-      mViewport.scrollLeft = third + offsetWithinCopy;
+    // Fully custom drag: the strip is driven by our own translateX + velocity,
+    // never by native scrollLeft. That's what makes the loop genuinely seamless —
+    // there's no native scroll/rubber-band physics at the copy edges to fight,
+    // because there's no native scroll happening at all.
+    var unit = 0;
+    var getUnit = function(){
+      if(!unit) unit = mTrack.scrollWidth / 3;
+      return unit;
     };
-    mViewport.addEventListener('touchstart', activate, { passive:true });
-    mViewport.addEventListener('pointerdown', activate);
+    var current = 0;
+    var userControlled = false;
+    var dragging = false;
+    var startX = 0, startCurrent = 0, lastX = 0, lastT = 0, velocity = 0;
+    var momentumRAF = null;
 
-    // Only correct the loop position once scrolling has fully settled — doing it
-    // on every scroll event fights iOS's native momentum/rubber-band animation
-    // mid-gesture, which is what causes visible stutter at the ends of the strip.
-    var wrapTimer = null;
-    mViewport.addEventListener('scroll', function(){
-      if(!userControlled) return;
-      if(wrapTimer) clearTimeout(wrapTimer);
-      wrapTimer = setTimeout(function(){
-        var third = mTrack.scrollWidth / 3;
-        if(mViewport.scrollLeft < third){
-          mViewport.scrollLeft += third;
-        } else if(mViewport.scrollLeft > third * 2){
-          mViewport.scrollLeft -= third;
+    var wrap = function(x){
+      var u = getUnit();
+      while(x <= -u) x += u;
+      while(x > 0) x -= u;
+      return x;
+    };
+    var render = function(){ mTrack.style.transform = 'translateX(' + current + 'px)'; };
+
+    var stopMomentum = function(){
+      if(momentumRAF){ cancelAnimationFrame(momentumRAF); momentumRAF = null; }
+    };
+
+    var activate = function(clientX){
+      if(!userControlled){
+        userControlled = true;
+        var currentX = 0;
+        var st = window.getComputedStyle(mTrack).transform;
+        if(st && st !== 'none'){
+          var m = st.match(/matrix\(([^)]+)\)/);
+          if(m){ currentX = parseFloat(m[1].split(',')[4]) || 0; }
         }
-      }, 140);
-    }, { passive:true });
+        current = wrap(currentX);
+        mViewport.classList.add('user-controlled');
+      }
+      stopMomentum();
+      dragging = true;
+      mViewport.classList.add('dragging');
+      startX = clientX;
+      startCurrent = current;
+      lastX = clientX;
+      lastT = performance.now();
+      velocity = 0;
+    };
+
+    var moveTo = function(clientX){
+      if(!dragging) return;
+      var now = performance.now();
+      var dt = now - lastT;
+      if(dt > 0){ velocity = (clientX - lastX) / dt; }
+      lastX = clientX;
+      lastT = now;
+      current = wrap(startCurrent + (clientX - startX));
+      render();
+    };
+
+    var endDrag = function(){
+      if(!dragging) return;
+      dragging = false;
+      mViewport.classList.remove('dragging');
+      var v = velocity;
+      var step = function(){
+        v *= 0.945;
+        current = wrap(current + v * 16);
+        render();
+        if(Math.abs(v) > 0.02){
+          momentumRAF = requestAnimationFrame(step);
+        } else {
+          momentumRAF = null;
+        }
+      };
+      if(Math.abs(v) > 0.02){ momentumRAF = requestAnimationFrame(step); }
+    };
+
+    mViewport.addEventListener('pointerdown', function(e){
+      activate(e.clientX);
+      if(mViewport.setPointerCapture){
+        try{ mViewport.setPointerCapture(e.pointerId); }catch(err){}
+      }
+    });
+    mViewport.addEventListener('pointermove', function(e){ moveTo(e.clientX); });
+    mViewport.addEventListener('pointerup', endDrag);
+    mViewport.addEventListener('pointercancel', endDrag);
   }
 })();
 </script>
